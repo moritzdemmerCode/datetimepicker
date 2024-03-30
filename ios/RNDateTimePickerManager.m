@@ -195,4 +195,31 @@ RCT_CUSTOM_VIEW_PROPERTY(timeZoneName, NSString, RNDateTimePicker)
     }
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(customFont, NSString, RNDateTimePicker)
+{
+    if (json) {
+        NSString *fontName = [RCTConvert NSString:json];
+        CGFloat fontSize = 17; // Beispielgröße, anpassen nach Bedarf
+
+        UIFont *font = [UIFont fontWithName:fontName size:fontSize];
+        if (font) {
+            [self recursivelySetFont:view toFont:font];
+        } else {
+            RCTLogError(@"Die angegebene Schriftart '%@' konnte nicht geladen werden.", fontName);
+        }
+    }
+}
+
+- (void)recursivelySetFont:(UIView *)view toFont:(UIFont *)font
+{
+    if ([view isKindOfClass:[UILabel class]]) {
+        UILabel *label = (UILabel *)view;
+        label.font = font;
+    }
+
+    for (UIView *subview in view.subviews) {
+        [self recursivelySetFont:subview toFont:font];
+    }
+}
+
 @end
