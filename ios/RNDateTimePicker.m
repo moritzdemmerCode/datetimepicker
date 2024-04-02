@@ -15,6 +15,8 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onPickerDismiss;
 @property (nonatomic, assign) NSInteger reactMinuteInterval;
+@property (nonatomic, strong) UIFont *customFont;
+@property (nonatomic, assign) CGFloat customFontSize;
 
 @end
 
@@ -69,6 +71,38 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     // Need to avoid the case where values coming back through the bridge trigger a new valueChanged event
     if (![self.date isEqualToDate:date]) {
         [super setDate:date animated:NO];
+    }
+}
+
+- (void)setCustomFont:(UIFont *)customFont
+{
+    _customFont = customFont;
+    [self updateLabelsFont];
+}
+
+- (void)setCustomFontSize:(CGFloat)customFontSize
+{
+    _customFontSize = customFontSize;
+    [self updateLabelsFont];
+}
+
+- (void)updateLabelsFont
+{
+    if (self.customFont) {
+        UIFont *fontWithSize = [self.customFont fontWithSize:self.customFontSize ?: self.customFont.pointSize];
+        [self recursivelySetFont:self toFont:fontWithSize];
+    }
+}
+
+- (void)recursivelySetFont:(UIView *)view toFont:(UIFont *)font
+{
+    if ([view isKindOfClass:[UILabel class]]) {
+        UILabel *label = (UILabel *)view;
+        label.font = font;
+    }
+
+    for (UIView *subview in view.subviews) {
+        [self recursivelySetFont:subview toFont:font];
     }
 }
 
