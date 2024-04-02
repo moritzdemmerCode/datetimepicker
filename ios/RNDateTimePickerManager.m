@@ -215,6 +215,8 @@ RCT_CUSTOM_VIEW_PROPERTY(customFont, NSString, RNDateTimePicker)
             RCTLogError(@"Die angegebene Schriftart '%@' konnte nicht geladen werden.", fontName);
         }
     }
+    
+    [view setNeedsLayout];
 }
 
 @end
