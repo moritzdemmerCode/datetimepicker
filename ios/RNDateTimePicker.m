@@ -15,9 +15,6 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onPickerDismiss;
 @property (nonatomic, assign) NSInteger reactMinuteInterval;
-@property (nonatomic, copy) UIFont *customFont;
-@property (nonatomic, assign) CGFloat customFontSize;
-
 @end
 
 @implementation RNDateTimePicker
@@ -53,7 +50,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     _onPickerDismiss(@{});
   }
 }
+- (UILabel *)valueLabel {
+    return [self recursiveFindLabelInView:self];
+}
 
+- (UILabel *)recursiveFindLabelInView:(UIView *)view {
+    if ([view isKindOfClass:[UILabel class]]) {
+        return (UILabel *)view;
+    }
+    
+    for (UIView *subview in view.subviews) {
+        UILabel *label = [self recursiveFindLabelInView:subview];
+        if (label) {
+            return label;
+        }
+    }
+    
+    return nil;
+}
 - (void)setDatePickerMode:(UIDatePickerMode)datePickerMode
 {
   [super setDatePickerMode:datePickerMode];
