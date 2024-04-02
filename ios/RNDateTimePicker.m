@@ -85,6 +85,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     // Need to avoid the case where values coming back through the bridge trigger a new valueChanged event
     if (![self.date isEqualToDate:date]) {
         [super setDate:date animated:NO];
+        [self updateLabelsFont];
     }
 }
 
