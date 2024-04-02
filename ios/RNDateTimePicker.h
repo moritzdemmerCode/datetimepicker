@@ -8,5 +8,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RNDateTimePicker : UIDatePicker
-
+@property (nonatomic, assign) CGFloat customFontSize;
+@property (nonatomic, strong) UIFont *customFont;
+@property (nonatomic, strong, readonly) UILabel *valueLabel;
 @end
