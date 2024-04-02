@@ -95,17 +95,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     [self updateLabelsFont];
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (self.window) {
+        [self updateLabelsFont];
+    }
+}
 - (void)setCustomFontSize:(CGFloat)customFontSize
 {
     _customFontSize = customFontSize;
     [self updateLabelsFont];
 }
 
-- (void)updateLabelsFont
-{
+- (void)updateLabelsFont {
     if (self.customFont) {
         UIFont *fontWithSize = [self.customFont fontWithSize:self.customFontSize ?: self.customFont.pointSize];
-        [self recursivelySetFont:self toFont:fontWithSize];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self recursivelySetFont:self toFont:fontWithSize];
+        });
     }
 }
 
