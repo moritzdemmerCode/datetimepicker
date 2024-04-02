@@ -15,7 +15,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onPickerDismiss;
 @property (nonatomic, assign) NSInteger reactMinuteInterval;
-@property (nonatomic, strong) UIFont *customFont;
+@property (nonatomic, strong) UIFont customFont;
 @property (nonatomic, assign) CGFloat customFontSize;
 
 @end
