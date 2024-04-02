@@ -194,41 +194,26 @@ RCT_CUSTOM_VIEW_PROPERTY(timeZoneName, NSString, RNDateTimePicker)
         view.timeZone = NSTimeZone.localTimeZone;
     }
 }
+RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber, RNDateTimePicker)
+{
+    if (json) {
+        CGFloat fontSize = [RCTConvert CGFloat:json];
+        view.customFontSize = fontSize;
+    }
+}
 
 RCT_CUSTOM_VIEW_PROPERTY(customFont, NSString, RNDateTimePicker)
 {
     if (json) {
         NSString *fontName = [RCTConvert NSString:json];
-        CGFloat fontSize = 17; // Beispielgröße, anpassen nach Bedarf
-        
-        // Ausgabe aller verfügbaren Schriftarten
-        NSArray<NSString *> *fontFamilies = [UIFont familyNames];
-        for (NSString *fontFamily in fontFamilies) {
-            NSLog(@"Font Family: %@", fontFamily);
-            NSArray<NSString *> *fontNames = [UIFont fontNamesForFamilyName:fontFamily];
-            for (NSString *fontName in fontNames) {
-                NSLog(@"- Font Name: %@", fontName);
-            }
-        }
+        CGFloat fontSize = view.customFontSize ?: view.valueLabel.font.pointSize;
         
         UIFont *font = [UIFont fontWithName:fontName size:fontSize];
         if (font) {
-            [self recursivelySetFont:view toFont:font];
+            view.customFont = font;
         } else {
             RCTLogError(@"Die angegebene Schriftart '%@' konnte nicht geladen werden.", fontName);
         }
-    }
-}
-
-- (void)recursivelySetFont:(UIView *)view toFont:(UIFont *)font
-{
-    if ([view isKindOfClass:[UILabel class]]) {
-        UILabel *label = (UILabel *)view;
-        label.font = font;
-    }
-
-    for (UIView *subview in view.subviews) {
-        [self recursivelySetFont:subview toFont:font];
     }
 }
 
