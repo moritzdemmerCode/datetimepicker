@@ -200,7 +200,17 @@ RCT_CUSTOM_VIEW_PROPERTY(customFont, NSString, RNDateTimePicker)
     if (json) {
         NSString *fontName = [RCTConvert NSString:json];
         CGFloat fontSize = 17; // Beispielgröße, anpassen nach Bedarf
-
+        
+        // Ausgabe aller verfügbaren Schriftarten
+        NSArray<NSString *> *fontFamilies = [UIFont familyNames];
+        for (NSString *fontFamily in fontFamilies) {
+            NSLog(@"Font Family: %@", fontFamily);
+            NSArray<NSString *> *fontNames = [UIFont fontNamesForFamilyName:fontFamily];
+            for (NSString *fontName in fontNames) {
+                NSLog(@"- Font Name: %@", fontName);
+            }
+        }
+        
         UIFont *font = [UIFont fontWithName:fontName size:fontSize];
         if (font) {
             [self recursivelySetFont:view toFont:font];
